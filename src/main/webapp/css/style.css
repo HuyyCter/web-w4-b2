@@ -1,0 +1,63 @@
+body { 
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11pt;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+h1 { 
+    color: teal;
+}
+label {
+    float: left;
+    width: 6em;
+    margin-bottom: 0.5em;
+}
+input[type="text"], input[type="email"] {
+    width: 15em;
+    margin-left: 0.5em;    
+    margin-bottom: 0.5em;
+}
+br {
+    clear: both;
+}
+#submit {
+    margin-left: 0.5em; }
+
+    
+table {
+    width: 100%;
+    max-width: 500px;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+}
+
+table th,
+table td {
+    border: 1px solid #ccc;
+    padding: 10px 16px;
+    text-align: left;
+}
+
+table th {
+    font-weight: bold;
+}
+
+.album-list {
+    max-width: 500px;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+}
+
+.album-list a {
+    display: block;
+    border: 1px solid #ccc;
+    padding: 10px 16px;
+    margin-bottom: -1px; /* để các viền dính liền nhau, không bị dày đôi */
+    text-decoration: none;
+    color: #000;
+}
+
+.album-list a:hover {
+    background-color: #f5f5f5;
+}
