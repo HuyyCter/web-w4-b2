@@ -35,14 +35,23 @@ public class DownloadServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String action = request.getParameter("action");
+//		if (action == null) {
+//			action = "viewAlbum";
+//		}
 		
 		String url = "";
 		switch (action) {
+			case "viewAlbum":
+				url = "";
+				break;
 			case "checkUser":
 				url = checkUser(request, response);
 				break;
 			case "registerUser":
 				url = registerUser(request, response);
+				break;
+			default:
+				url = "/index.jsp";
 				break;
 		}
 		
@@ -75,10 +84,12 @@ public class DownloadServlet extends HttpServlet {
 				String path = sc.getRealPath("/WEB-INF/EmailList.txt");
 //				user = UserIO.getUser(emailAddress, path);
 				session.setAttribute("user", user);
-				url = "/" + productId + "_download.jsp";
+				session.setAttribute("verifiedAccess", true);
+				url = "/WEB-INF/html/" + productId + "_download.jsp";
 			}
 		} else {
-			url = "/" + productId + "_download.jsp";
+			session.setAttribute("verifiedAccess", true);
+			url = "/WEB-INF/html/" + productId + "_download.jsp";
 		}
 		
 		return url;
@@ -103,7 +114,7 @@ public class DownloadServlet extends HttpServlet {
 		response.addCookie(c);
 		
 		String productId = (String) session.getAttribute("productId");
-		String url = "/" + productId + "_download.jsp";
+		String url = "/WEB-INF/html/" + productId + "_download.jsp";
 		return url;
 	}
 
