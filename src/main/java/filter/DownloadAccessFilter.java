@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Servlet Filter implementation class DownloadAccessFilter
  */
-@WebFilter("/WEB-INF/html/*")
+@WebFilter("*.jsp")
 public class DownloadAccessFilter extends HttpFilter implements Filter {
 	private static final long serialVersionUID = 1L;
 
@@ -44,6 +44,7 @@ public class DownloadAccessFilter extends HttpFilter implements Filter {
 		// place your code here
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
+//		httpRequest.getRequestDispatcher("/register.jsp").forward(httpRequest, httpResponse);
 		HttpSession session = httpRequest.getSession(false);
 		
 		if (session == null) {

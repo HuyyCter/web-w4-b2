@@ -51,7 +51,7 @@ public class DownloadServlet extends HttpServlet {
 				url = registerUser(request, response);
 				break;
 			default:
-				url = "/index.jsp";
+				url = "/";
 				break;
 		}
 		
@@ -85,11 +85,11 @@ public class DownloadServlet extends HttpServlet {
 //				user = UserIO.getUser(emailAddress, path);
 				session.setAttribute("user", user);
 				session.setAttribute("verifiedAccess", true);
-				url = "/WEB-INF/html/" + productId + "_download.jsp";
+				url = "/html/" + productId + "_download.jsp";
 			}
 		} else {
 			session.setAttribute("verifiedAccess", true);
-			url = "/WEB-INF/html/" + productId + "_download.jsp";
+			url = "/html/" + productId + "_download.jsp";
 		}
 		
 		return url;
@@ -114,7 +114,7 @@ public class DownloadServlet extends HttpServlet {
 		response.addCookie(c);
 		
 		String productId = (String) session.getAttribute("productId");
-		String url = "/WEB-INF/html/" + productId + "_download.jsp";
+		String url = "/html/" + productId + "_download.jsp";
 		return url;
 	}
 
