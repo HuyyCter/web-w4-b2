@@ -1,6 +1,5 @@
 package controller;
 
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -21,29 +20,21 @@ import utls.CookieUtil;
 public class DownloadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public DownloadServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String action = request.getParameter("action");
-//		if (action == null) {
-//			action = "viewAlbum";
-//		}
+		if (action == null || action.trim().isEmpty()) {
+			action = "viewAlbum";
+		}
 		
-		String url = "";
+		String url = "/";
 		switch (action) {
 			case "viewAlbum":
-				url = "";
-				break;
+				response.sendRedirect(request.getContextPath() + "/");
+				return;
 			case "checkUser":
 				url = checkUser(request, response);
 				break;
@@ -51,38 +42,46 @@ public class DownloadServlet extends HttpServlet {
 				url = registerUser(request, response);
 				break;
 			default:
-				url = "/";
-				break;
+				response.sendRedirect(request.getContextPath() + "/");
+				return;
 		}
 		
-		request.getRequestDispatcher(url).forward(request, response);
+		if (url != null && !url.isEmpty()) {
+			request.getRequestDispatcher(url).forward(request, response);
+		} else {
+			response.sendRedirect(request.getContextPath() + "/");
+		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	
 	private String checkUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String productId = request.getParameter("productId");
 		HttpSession session = request.getSession(true);
-		session.setAttribute("productId", productId);
-		User user = (User) session.getAttribute("user");
 		
+		if (productId != null && !productId.trim().isEmpty()) {
+			session.setAttribute("productId", productId);
+		} else {
+			productId = (String) session.getAttribute("productId");
+		}
+		
+		if (productId == null || productId.trim().isEmpty()) {
+			productId = "8601";
+			session.setAttribute("productId", productId);
+		}
+		
+		User user = (User) session.getAttribute("user");
 		String url = "";
 		if (user == null) {
 			Cookie[] cookies = request.getCookies();
 			String emailAddress = CookieUtil.getCookieValue(cookies, "emailCookie");
 			
-			if (emailAddress == null || emailAddress.equals("")) {
+			if (emailAddress == null || emailAddress.trim().isEmpty()) {
 				url = "/register.jsp";
 			} else {
-				ServletContext sc = getServletContext();
-				String path = sc.getRealPath("/WEB-INF/EmailList.txt");
-//				user = UserIO.getUser(emailAddress, path);
+				user = new User("", "", emailAddress);
 				session.setAttribute("user", user);
 				session.setAttribute("verifiedAccess", true);
 				url = "/html/" + productId + "_download.jsp";
@@ -100,20 +99,21 @@ public class DownloadServlet extends HttpServlet {
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
 		
-		User user = new User();
-		user.setEmail(email);
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
+		User user = new User(firstName, lastName, email);
 		
-		HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession(true);
 		session.setAttribute("user", user);
+		session.setAttribute("verifiedAccess", true);
 		
-		Cookie c = new Cookie("emailCookie", email);
+		Cookie c = new Cookie("emailCookie", email != null ? email : "");
 		c.setMaxAge(60 * 60 * 24 * 365 * 2);
 		c.setPath("/");
 		response.addCookie(c);
 		
 		String productId = (String) session.getAttribute("productId");
+		if (productId == null || productId.trim().isEmpty()) {
+			productId = "8601";
+		}
 		String url = "/html/" + productId + "_download.jsp";
 		return url;
 	}

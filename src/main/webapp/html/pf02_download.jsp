@@ -1,11 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>8601 Band</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<title>Paddlefoot - The Second CD</title>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
 	<h1>Downloads</h1>
@@ -30,5 +29,6 @@
 	</tr>
 	</table>
 	
+	<p><a href="${pageContext.request.contextPath}/download?action=viewAlbum">View Albums</a></p>
 </body>
 </html>
